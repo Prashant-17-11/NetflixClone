@@ -8,13 +8,8 @@ import "./Styles/Homescreen.css";
 const Homescreen = () => {
   return (
     <div className='homescreen'>
-      {/* Navbar */}
       <Navbar />
-
-      {/* Banner */}
       <Banner />
-
-      {/* Rows */}
       <Row
         title='NETFLIX ORIGINALS'
         fetchUrl={requests.fetchNetflixOriginals}
