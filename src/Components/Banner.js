@@ -6,18 +6,6 @@ import requests from "../features/tmdbAPI/Requests";
 const Banner = () => {
   const [movie, setMovie] = useState([]);
 
-  // componentDidMount() {
-  //   axios.get(requests.fetchTopRated)
-  //     .then(res => {
-  //       const movies = res.data;
-  //       setMovie(
-  //         movies.results[
-  //           Math.floor(Math.random() * movies.results.length - 1)
-  //         ]
-  //       );
-  //     })
-  // };
-
   useEffect(() => {
     async function fetchMovie() {
       try {
