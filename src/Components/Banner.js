@@ -1,9 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../Styles/Banner.css";
+import axios from "../features/tmdbAPI/axios";
+import requests from "../features/tmdbAPI/Requests";
 
 const Banner = () => {
+  const [movie, setMovie] = useState([]);
+
+  // componentDidMount() {
+  //   axios.get(requests.fetchTopRated)
+  //     .then(res => {
+  //       const movies = res.data;
+  //       setMovie(
+  //         movies.results[
+  //           Math.floor(Math.random() * movies.results.length - 1)
+  //         ]
+  //       );
+  //     })
+  // };
+
+  useEffect(() => {
+    async function fetchMovie() {
+      try {
+        let response = await axios.get(requests.fetchNetflixOriginals);
+        // console.log("[ Banner ]: fetchMovie Response = ", response.data);
+        // Set random Banner movie:
+        setMovie(
+          response.data.results[
+            Math.floor(Math.random() * response.data.results.length - 1)
+          ]
+        );
+      } catch (err) {
+        // console.log("[ Banner ]: fetchMovie Error = ", err);
+      }
+    }
+
+    fetchMovie();
+  }, []);
+
+  console.log(movie);
+
   function truncateDescription(string, n) {
-    return string.length > n ? string.substr(0, n - 1) + "..." : string;
+    return string?.length > n ? string.substr(0, n - 1) + "..." : string;
   }
 
   return (
@@ -12,20 +49,19 @@ const Banner = () => {
       style={{
         backgroundSize: "cover",
         backgroundPosition: "center center",
-        backgroundImage: `url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAACuCAMAAAClZfCTAAAAA1BMVEUAAACnej3aAAAASElEQVR4nO3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABeA8XKAAFZcBBuAAAAAElFTkSuQmCC')`,
+        backgroundImage: `url('https://image.tmdb.org/t/p/original/${movie?.backdrop_path}')`,
       }}
     >
       <div className='banner_container'>
-        <h1 className='banner_title'>Movie Name</h1>
+        <h1 className='banner_title'>
+          {movie?.title || movie?.name || movie?.original_name}
+        </h1>
         <div className='banner_buttons'>
           <button className='banner_button'>Play</button>
           <button className='banner_button'>My List</button>
         </div>
         <h1 className='banner_description'>
-          {truncateDescription(
-            `This is some sample description to see if the truncate fucntion truncates string which is too long.. Strings which are too long if rendered as it is would loook bad so we would truncate them after a certain length`,
-            150
-          )}
+          {truncateDescription(movie?.overview, 150)}
         </h1>
       </div>
 
